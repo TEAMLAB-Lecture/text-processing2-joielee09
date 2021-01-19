@@ -28,9 +28,16 @@ def digits_to_words(input_string):
             >>> tp2.digits_to_words(digits_str2)
             'three one four one five'
     """
-    digit_string = None
+    dic=["zero", "one", 'two', "three", "four", "five", "six", "seven", "eight", "nine"]
+    digit_string = ""
+    s_len = len(input_string)
+    for i in range(s_len):
+        x = (ord(input_string[i])-ord('0'))
+        if(x>=0 and x<=9):
+            digit_string+=dic[x]
+            digit_string+=' '
+    digit_string=digit_string[:len(digit_string)-1]
     return digit_string
-
 
 """
 컴퓨터 프로그래밍에 많은 명명 규칙이 있지만, 두 규칙이 특히 흔히 쓰입니다. 
@@ -38,7 +45,6 @@ def digits_to_words(input_string):
 두번째로는, 변수 이름을 대소문자 구별해 구분자 (delimiter)없이 쓰는 경우가 있습니다. 
 이 두번째의 경우에는 첫번째 단어는 소문자로, 그 후에 오는 단어들의 첫번째 글자들은 대문자로 쓰입니다 (ex. camelCaseVariable). 
 """
-
 
 def to_camel_case(underscore_str):
     """
@@ -64,5 +70,44 @@ def to_camel_case(underscore_str):
             >>> tp2.to_camel_case(underscore_str3)
             "alreadyCamel"
     """
-    camelcase_str = None
+    camelcase_str = ""
+    s_len = len(underscore_str)
+    cur=0
+    chk=False
+    if(underscore_str==""):
+        return camelcase_str
+    for i in range(s_len):
+        if(underscore_str[-1]=='_'):
+            chk=True
+        if(underscore_str[i]=='_'): # i == _
+            if(underscore_str[cur]=='_'):
+                cur=i
+                continue
+            else:
+                if(len(camelcase_str)!=0):
+                    x = underscore_str[cur:i].lower()
+                    camelcase_str+=x[0].capitalize()
+                    camelcase_str+=x[1:].lower()
+                else: #cur
+                    camelcase_str+= underscore_str[cur:i].lower()
+                cur=i
+        else: # i != _
+            if(underscore_str[cur]=='_'):
+                cur=i
+            else:
+                continue
+    if(cur==0):
+        camelcase_str=""
+        camelcase_str+=underscore_str[0].lower()
+        camelcase_str+=underscore_str[1:]
+        return camelcase_str
+    if(chk):
+        return camelcase_str
+    x = underscore_str[cur:i+1].lower()
+    camelcase_str+=x[0].capitalize()
+    camelcase_str+=x[1:].lower()
     return camelcase_str
+
+#.split('_')
+#.capitalize()
+#' '.join(arr)
